@@ -50,10 +50,10 @@
     <canvas id="rain-canvas"></canvas>
     
     <audio id="birthday-song" loop>
-        <source src="Je te laisserai des mots.mp3" type="audio/mpeg">
+        <source src="http://googleusercontent.com/file_content/2" type="audio/mpeg">
     </audio>
 
-    <div id="play-prompt" class="fixed bottom-0 right-0 p-4 m-4 bg-black bg-opacity-50 text-white rounded-lg transition-opacity duration-500 z-50 animate-pulse">
+    <div id="play-prompt" class="fixed bottom-0 right-0 p-4 m-4 bg-black bg-opacity-70 text-white rounded-lg transition-opacity duration-500 z-50 animate-pulse cursor-pointer">
         Haz clic para la música 🎵
     </div>
 
@@ -90,7 +90,7 @@
             <p class="text-gray-300 leading-relaxed max-w-3xl mx-auto text-center mt-6">
                 Sabes que la poesía es más que palabras en una página; es el aliento del alma, el eco de los sentimientos más profundos. Para el poeta innato que llevas dentro, para ese espíritu que encuentra belleza y significado en cada verso, te deseo que este nuevo año esté rebosante de inspiración. Que encuentres nuevas musas en cada rincón, que tus pensamientos se transformen en metáforas y que la vida te regale poemas sin fin, listos para ser descubiertos y vividos. Que cada día sea un verso y cada año, una estrofa magistral.
                 <span class="text-green-400 font-semibold ml-1 animate-pulse-light">Te quiero.</span>
-            </l>
+            </p>
         </div>
 
         <div class="fade-in-section py-16 border-b border-gray-700">
@@ -127,7 +127,7 @@
                         </p>
                         <p class="text-gray-400 mt-2">
                             Un crudo y poderoso recordatorio de los lazos que nos unen y la intensidad del amor, incluso en las circunstancias más difíciles. Que siempre sientas la fuerza de los amores que te rodean.
-                        </d>
+                        </p>
                     </blockquote>
                 </div>
                 <div>
@@ -155,7 +155,7 @@
                     "أُريدُ أن أكتُبَ لكِ كلاماً<br>
                     لا يُشبِهُ الكلامْ<br>
                     وأخترعُ لُغةً لكِ وحدكِ"
-                </r>
+                </p>
                 <p class="text-lg italic text-gray-400 leading-relaxed">
                     "Uridu an aktuba laki kalam-an<br>
                     la yushbihu al-kalam<br>
@@ -184,7 +184,7 @@
             <h2 class="text-4xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-blue-400 mb-8">Un Mensaje Profundo Desde el Corazón</h2>
             <p class="text-xl md:text-2xl text-gray-200 max-w-4xl mx-auto leading-loose">
                 Mi querido Juandi, en este día tan significativo, mi deseo más profundo es que el universo conspire a tu favor para que encuentres todo aquello que te nutre, te eleva y te hace sentir plenamente vivo. Que cada amanecer sea una promesa de nuevas oportunidades y cada atardecer, un dulce recordatorio de los logros y la belleza del día.
-                <br><Fbr>
+                <br><br>
                 Sé que a veces la vida puede ser exigente y los caminos se tornan difíciles, pero recuerda siempre la fuerza y la resiliencia que habitan en ti. Eres una persona de una profundidad y sensibilidad inigualables, capaz de amar con intensidad y de ver el mundo con una perspectiva única. Esas cualidades son un tesoro.
                 <br><br>
                 Deseo de todo corazón que
@@ -192,7 +192,7 @@
                     encuentres iluminación, alegría, paz y un amor interminable.
                 </span>
                 <br>
-                Que tu viaje esté lleno de descubrimientos fascinantes, de amistades que te brinden calor, de momentos de pura felicidad que te hagan reír hasta que te duela el estómago y de silencios contemplativos que te conecten con tu esencia más pura. Que cada obstáculo se convierta en un escalón, cada desafío en una lección, y cada sueño, en una realidad tangible. Que la vida te trate con la ternura y la generosidad que te mereces. Gracias por ser tú, por tu amistad, por tu existencia.
+                Que tu viaje esté lleno de descubrimientos fascinantes, de amistades que te brinden calor, de momentos de pura felicidad que te hagan reír hasta que te duela el estómago y de silencios contemplativos que te conecten con tu esencia más pura. Que cada obstáculo se con<vierta en un escalón, cada desafío en una lección, y cada sueño, en una realidad tangible. Que la vida te trate con la ternura y la generosidad que te mereces. Gracias por ser tú, por tu amistad, por tu existencia.
                 <span class="text-pink-300 font-bold block mt-8 text-3xl animate-pulse-light">¡Te quiero muchísimo, Juandi, más de lo que las palabras pueden expresar!</span>
                 <span class="block mt-4 text-2xl text-purple-200 animate-pulse-light">Te quiero. Te quiero. Te quiero.</span>
             </p>
@@ -212,7 +212,7 @@
             function startMusic() {
                 if (audio) {
                     audio.volume = 0.5;
-                    audio.play();
+                    audio.play().catch(e => console.error("Audio play failed:", e));
                 }
                 if (playPrompt) {
                     playPrompt.style.opacity = '0';
@@ -220,12 +220,18 @@
                         if (playPrompt) playPrompt.style.display = 'none';
                     }, 500);
                 }
-                document.body.removeEventListener('click', startMusic);
-                document.body.removeEventListener('touchstart', startMusic);
+                // Remove the listener from the prompt itself after first click
+                if (playPrompt) {
+                    playPrompt.removeEventListener('click', startMusic);
+                    playPrompt.removeEventListener('touchstart', startMusic);
+                }
             }
 
-            document.body.addEventListener('click', startMusic);
-            document.body.addEventListener('touchstart', startMusic);
+            // Only add listeners to the prompt
+            if (playPrompt) {
+                playPrompt.addEventListener('click', startMusic);
+                playPrompt.addEventListener('touchstart', startMusic);
+            }
 
             const sections = document.querySelectorAll('.fade-in-section');
 
